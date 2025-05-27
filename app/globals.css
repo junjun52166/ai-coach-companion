@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-gray-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 bg-secondary-600 text-white rounded-lg hover:bg-secondary-700 transition-colors duration-200;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* 渐变遮罩效果 */
+.testimonials-container {
+  position: relative;
+}
+
+.testimonials-container::before,
+.testimonials-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.testimonials-container::before {
+  left: 0;
+  background: linear-gradient(to right, rgb(249 250 251), transparent);
+}
+
+.testimonials-container::after {
+  right: 0;
+  background: linear-gradient(to left, rgb(249 250 251), transparent);
+}
+
+/* 移动端优化 */
+@media (max-width: 640px) {
+  .testimonials-container::before,
+  .testimonials-container::after {
+    width: 50px;
+  }
+  
+  .animate-scroll {
+    animation-duration: 20s;
+  }
+} 
