@@ -2,9 +2,10 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { useRouter } from 'next/router';
+import type { User } from '@supabase/supabase-js'; // 加入类型导入
 
 export default function DashboardPage() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null); // 修正类型
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
