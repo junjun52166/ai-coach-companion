@@ -1,12 +1,9 @@
-// app/api/chat/route.ts
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// 不要在这里初始化 openai
 
 // Define the expected structure of the request body
 interface RequestBody {
@@ -26,6 +23,11 @@ interface RequestBody {
 
 export async function POST(req: Request) {
   try {
+    // 在这里初始化 openai，确保只在运行时执行
+    const openai = new OpenAI({
+      apiKey: process.env.OPENROUTER_API_KEY,
+    });
+
     const supabase = createRouteHandlerClient({ cookies });
     const { data: { session } } = await supabase.auth.getSession();
 
@@ -105,37 +107,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-// Optional: Add a GET endpoint to fetch message history
-// export async function GET(request: Request) {
-//   try {
-//      const { searchParams } = new URL(request.url);
-//      const userId = searchParams.get('userId');
-
-//      if (!userId) {
-//         return NextResponse.json({ error: 'User ID is required' }, { status: 401 });
-//      }
-
-//      const { data, error } = await supabase
-//          .from('messages')
-//          .select('id, content, sender, created_at')
-//          .eq('user_id', userId)
-//          .order('created_at', { ascending: true }); // Order by timestamp
-
-//      if (error) throw error;
-
-//      // Format data to match the client's Message interface
-//      const formattedMessages = data.map(msg => ({
-//          id: msg.id, // Include id if needed on client
-//          text: msg.content,
-//          sender: msg.sender as 'user' | 'ai',
-//          created_at: msg.created_at // Include created_at if needed on client
-//      }));
-
-//      return NextResponse.json({ history: formattedMessages });
-
-//   } catch (error: any) {
-//      console.error('Error fetching history:', error);
-//      return NextResponse.json({ error: error.message || 'Failed to fetch history' }, { status: 500 });
-//   }
-// }
