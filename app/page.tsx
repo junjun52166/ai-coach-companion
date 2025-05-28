@@ -290,7 +290,7 @@ export default function Home() {
     }
   };
 
-  // Handle sending message to AI
+    // Handle sending message to AI
   const sendMessage = async () => {
     if (!input.trim() || loading || !session) return;
 
@@ -318,7 +318,9 @@ export default function Home() {
         throw new Error(data.error || `API Error: ${response.status}`);
       }
 
-      const aiResponseText = data.reply;
+      // === 修正这一行 ===
+      const aiResponseText = data.response; // <-- 这里从 data.reply 改为 data.response
+      // =================
 
       if (!aiResponseText) {
         throw new Error('API returned no reply');
@@ -330,8 +332,10 @@ export default function Home() {
     } catch (error: any) {
       console.error('Error sending message or getting AI response:', error);
       setMessage(`Error: ${error.message}`);
-      setMessages(prevMessages => prevMessages.filter(msg => msg.text !== newUserMessage.text || msg.sender !== 'user'));
-      setMessages(prevMessages => [...prevMessages, { text: 'Sorry, I could not get a response.', sender: 'ai' }]);
+      // Optional: Remove the user's last message if AI response failed, or add an error message below the AI response
+      // For now, let's keep the user message and add a generic error message.
+       const newAiMessage: Message = { text: 'Sorry, I could not get a response.', sender: 'ai' };
+       setMessages(prevMessages => [...prevMessages, newAiMessage]);
     } finally {
       setLoading(false);
       // Set focus back to the input field after sending and loading is done
