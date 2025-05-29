@@ -1,16 +1,10 @@
-      # 添加这个注释来尝试刷新工作流配置
-
-      name: Deploy to Vercel
-      # ... 文件其余内容 ...
- name: Deploy to Vercel
+name: Deploy to Vercel
 
 on:
   push:
     branches:
-      - main  # 或者你的主分支名称
-  pull_request:
-    branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
